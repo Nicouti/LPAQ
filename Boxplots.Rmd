@@ -1,0 +1,31 @@
+---
+title: "Gráficas de boxplot"
+output: html_document
+---
+```{r}
+install.packages("ggplot2")                              # Install & load ggplot2 package
+library("ggplot2")
+```
+```{r}
+
+datos_para_R
+ggplot(datos_para_R, aes(x = Tipo , y = Volúmenes,
+ fill = Tipo)) + 
+  stat_boxplot(geom = "errorbar", # Error bars
+               width = 0.1) +    # Bars width
+  geom_boxplot()
+```
+```{r}
+
+ggplot(datos2, aes(x = 1, y = V20 ,
+ fill = 1
+)) + 
+  stat_boxplot(geom = "errorbar", # Error bars
+               width = 0.25) +    # Bars width
+  geom_boxplot()+
+  theme(legend.position = "none") 
+
+```
+
+
+
