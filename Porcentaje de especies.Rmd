@@ -1,0 +1,44 @@
+---
+title: "Porcentaje de especies"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("scales") 
+library(scales)
+```
+```{r}
+alp  <- function(pH, pKa){
+  n  <- length(pKa)
+  numerator  <- 10^(-pH * n:0 - cumsum(c(0, pKa)))
+  numerator /  sum(numerator)
+}
+
+pKa <- c(1.82, 6, 9.17)
+pH <- 7.5
+alp(pH, pKa)
+
+carga <- c(0, -1, -2, -3)
+carga
+
+calculo.pH <- function(pH){
+  H3O <- 10^-pH
+  HO <- 1e-14 / H3O
+  a.HnA <- alp(pH, pKa)
+  HnA <- c.Total * a.HnA
+
+  H3O + sum(carga * HnA) - HO
+} 
+a.HnA <- alp(pH, pKa)
+HnA <- c.Total * a.HnA
+c.K3PO4 <- 0.01
+pKa <- c(1.82, 6, 9.17)
+carga <- c(0, -1, -2, -3)
+c.Total <- c.K3PO4
+pKa
+pH
+HnA
+percent(HnA, scale = 10000)
+```
+
