@@ -1,0 +1,37 @@
+---
+title: "Pruebas"
+output: html_document
+---
+```{r}
+install.packages(numDeriv)
+install.packages("rootSolve")
+library(numDeriv)
+library(readxl)
+library("ggplot2")
+library("rootSolve")
+gran_acbase <- read_excel("C:/Users/clau6/Desktop/R LPAQ/Acido base/gran acbase.xlsx")
+View(gran_acbase)
+```
+
+```{r}
+df.tab1 <- data.frame(gran_acbase)
+VOL <- df.tab1$VOL
+pH <- df.tab1$pH
+p.d <- df.tab1$primera.der
+s.d <- df.tab1$segunda.der
+p <- ggplot(df.tab1, aes(x = VOL , y = pH,))+ geom_point() + theme(panel.grid = element_line(color="gray")) + geom_smooth(se=FALSE)+  ggtitle("Curva de valoración de hidróxido de sodio con biftalato ácido de potasio") + xlab("Volumen de titulante (mL)") + ylab("pH")
+p +
+    theme(
+plot.title = element_text(color="red", size=12, face="bold.italic"))
+
+p2 <- ggplot(df.tab1, aes(x = VOL , y = p.d,))  + theme(panel.grid = element_line(color="gray"))+ geom_smooth(se=FALSE) +ggtitle("Primera derivada de la curva de valoración") +
+  xlab("Volumen de titulante (mL)") + ylab("Primera derivada")
+
+
+x.1 <- c(4, 5)
+y.1 = p.d[df.tab1$VOL == x.1]
+inter.1 <- data.frame(x = x.1, y = y.1)
+V.eq.1 <- predict(lm(x~y, inter.1), data.frame(y = 0))
+V.eq.1
+```
+

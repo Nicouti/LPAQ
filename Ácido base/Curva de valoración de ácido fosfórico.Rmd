@@ -1,0 +1,47 @@
+---
+title: "Gráficos de volumetrías"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+alp  <- function(pH, pKa){
+  n  <- length(pKa)
+  numerator  <- 10^(-pH * n:0 - cumsum(c(0, pKa)))
+  numerator /  sum(numerator)
+}
+Cargas = function(Carga.Mas, pKa){
+n = length(pKa)
+Carga.Mas:(Carga.Mas - n)
+}
+```
+
+```{r}
+K.w = 1e-14
+ c.H3PO4 = 0.1
+ c.NaOH = 0.01
+ V.A = 10.00
+ pKa = c(2.148, 7.199, 12.15)
+ carga.mas = 0
+curva.ti = function(pH,V.T){
+ H3O = 10^-pH
+ HO = K.w / H3O
+ alp.HnA = alp(pH, pKa)
+ car.HnA = Cargas(carga.mas, pKa)
+ V.Total = V.A + V.T
+ PO4 = sum(alp.HnA * car.HnA) * c.H3PO4 * V.A / V.Total
+ Cl = c.H3PO4 * V.A / V.Total
+ Na = c.NaOH * V.T / V.Total
+ H3O + Na + PO4 - Cl - HO}
+
+ V.eq = c.H3PO4 * V.A / c.NaOH
+ V.T = seq(0, 4 * V.eq, by = 0.01)
+pH = sapply(V.T, function(x)
+uniroot(curva.ti , V.T = x, c(0,14), tol = 1e-14)$root)
+plot(V.T, pH)
+
+```
+
